@@ -91,7 +91,9 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
+
+vim.g.undotree_SetFocusWhenToggle = 1
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -239,6 +241,29 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
+
+  {
+    'mbbill/undotree',
+    config = function()
+      local binding = '<leader>u'
+      local description = '[U]ndo tree'
+      vim.keymap.set('n', binding, vim.cmd.UndotreeToggle, { desc = description })
+      require('which-key').setup()
+      require('which-key').register {
+        [binding] = { name = description, _ = 'which_key_ignore' },
+      }
+    end,
+  },
+
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      -- 'sindrets/diffview.nvim', -- optional - Diff integration
+      'nvim-telescope/telescope.nvim', -- optional
+    },
+    config = true,
+  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
